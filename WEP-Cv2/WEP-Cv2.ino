@@ -3,8 +3,8 @@
 #include <WiFiUdp.h>
 #include <ArduinoOTA.h>
 
-const char* ssid = "LAPTOP-QFJLVROC 8500";
-const char* password = "294Bb$03";
+const char* ssid = "LAPTOP-QFJLVROC 8500"; // Wifi hotspot id
+const char* password = "294Bb$03"; // Wifi hotspot password
 int lastTimer =0;
 
 
@@ -20,12 +20,12 @@ int offFor = 500;
 bool PWMOn = false;
 int directionMode = 0;
 
-void MotorLeftClockWise()
+void MotorLeftForward()
 {
   digitalWrite(MotorLeftAPin, LOW);
   digitalWrite(MotorLeftBPin, HIGH);
 }
-void MotorLeftCounterClockWise()
+void MotorLeftReverse()
 {
   digitalWrite(MotorLeftAPin, HIGH);
   digitalWrite(MotorLeftBPin, LOW);
@@ -35,12 +35,12 @@ void MotorLeftStop()
   digitalWrite(MotorLeftAPin, LOW);
   digitalWrite(MotorLeftBPin, LOW);
 }
-void MotorRightClockWise()
+void MotorRightForward()
 {
   digitalWrite(MotorRightAPin, HIGH);
   digitalWrite(MotorRightBPin, LOW);
 }
-void MotorRightCounterClockWise()
+void MotorRightReverse()
 {
   digitalWrite(MotorRightAPin, LOW);
   digitalWrite(MotorRightBPin, HIGH);
@@ -53,25 +53,25 @@ void MotorRightStop()
 
 void MovementForward()
 {
-  MotorLeftClockWise();
-  MotorRightClockWise();
+  MotorLeftForward();
+  MotorRightForward();
 }
 
 void MovementReverse()
 {
-  MotorLeftCounterClockWise();
-  MotorRightCounterClockWise();
+  MotorLeftReverse();
+  MotorRightReverse();
 }
 
 void MovementTurnRight()
 {
-  MotorLeftCounterClockWise();
-  MotorRightClockWise();
+  MotorLeftReverse();
+  MotorRightForward();
 }
 void MovementTurnLeft()
 {
-  MotorLeftClockWise();
-  MotorRightCounterClockWise();
+  MotorLeftForward();
+  MotorRightReverse();
 }
 
 void MovementStop()
@@ -80,8 +80,7 @@ void MovementStop()
   MotorRightStop();
 }
 
-
-void PWMControl()
+void PWMControl() // Speed Control
 {
   Serial.print("Time ");
   Serial.print(millis());
@@ -178,9 +177,6 @@ void setup() {
   server.begin();
   Serial.println("Server started");
  
-
-
-  
   ArduinoOTA.begin();
   Serial.println("Ready");
   Serial.print("IP address: ");
@@ -295,7 +291,7 @@ void loop() {
   PWMControl();
   OTAHandler();
   wifiServer();
-
+  yield();
   
 }
 
